@@ -8,14 +8,14 @@ const Login = () => {
 
         <input type="text" 
           placeholder='Your Username'
-          className='px-3 py-1 border border-gray-400 rounded-lg'
+          className='px-3 py-1 border border-gray-400 rounded-md'
         />
         <input type="password" 
           placeholder='Your Password'
-          className='px-3 py-1 border border-gray-400 rounded-lg'
+          className='px-3 py-1 border border-gray-400 rounded-md'
         />
 
-        <button type='submit' className='bg-blue-700 text-white p-1 rounded-lg'>Submit</button>
+        <button type='submit' className='bg-blue-700 text-white p-1 rounded-md'>Submit</button>
       </form>
     </>
   )
