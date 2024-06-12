@@ -1,26 +1,26 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const User = require('./models/User')
+import express from 'express';
+import cors from 'cors';
+import { PORT, mongoDBURL } from './config.js';
+import mongoose from 'mongoose';
+import UserModel from './models/User.js';
 
-const app = express();
+const app = express()
 
-app.use(cors());
-app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
-mongoose.connect('mongodb+srv://root:root@cluster0.mrstoal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(mongoDBURL)
 
 app.post('/register', async (req, res) => {
-    const {username, password} = req.body
-
     try {
-        const newUser = await User.create({username, password})
-        res.json({newUser})
+        const {username, password} = req.body
+
+        const newUser = await UserModel.create({ username: username, password: password })
+        res.json({resData: newUser})
     } catch (error) {
-        res.status(404).json({message: 'Error creating user'})
+        res.status(404).json({message: 'Error creating user'})   
     }
 })
 
-app.listen(4000)
-// mongodb+srv://root:root@cluster0.mrstoal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+app.listen(PORT)
 
