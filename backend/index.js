@@ -14,11 +14,10 @@ mongoose.connect(mongoDBURL)
 app.post('/register', async (req, res) => {
     try {
         const {username, password} = req.body
-
         const newUser = await UserModel.create({ username: username, password: password })
-        res.json({resData: newUser})
+        res.json(newUser)
     } catch (error) {
-        res.status(404).json({message: 'Error creating user'})   
+        res.status(404).json(error)   
     }
 })
 
