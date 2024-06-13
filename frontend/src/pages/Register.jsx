@@ -10,7 +10,13 @@ const Register = () => {
     console.log(username, password)
 
     axios.post('http://localhost:4000/register', { username, password })
-     .then(res => console.log(res))
+     .then(res => {
+      if (res.status === 200) {
+        alert('Registration Successful')
+      } else {
+        alert('Registration Unsuccessful')
+      }
+    })
      .catch(err => console.log(err))
   }
 
