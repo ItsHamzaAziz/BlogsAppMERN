@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import UserModel from './models/User.js';
 import bycrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import cookieParser from 'cookie-parser';
 
 const salt = bycrypt.genSaltSync(10)
 const secret = 'sdfab2131212nknkl767823nini2nj98'
@@ -16,6 +17,7 @@ app.use(cors({
     origin: 'http://localhost:5173'
 }))
 app.use(express.json())
+app.use(cookieParser())
 
 mongoose.connect(mongoDBURL)
 
@@ -41,7 +43,10 @@ app.post('/login', async (req, res) => {
             if (bycrypt.compareSync(password, user.password)) {
                 jwt.sign({username, id:user._id}, secret, {}, (err, token) => {
                     if (err) throw err
-                    res.cookie('token', token).json('ok')
+                    res.cookie('token', token).json({
+                        id: user._id,
+                        username
+                    })
                 })
             } else {
                 res.status(400).json({ message: 'Invalid Password' })
@@ -52,6 +57,22 @@ app.post('/login', async (req, res) => {
     } catch (error) {
         res.status(404).json(error)   
     }
+})
+
+app.get('/profile', (req, res) => {
+    try {
+        const {token} = req.cookies
+        jwt.verify(token, secret, {}, (err, info) => {
+            if (err) throw err
+            res.json(info)
+        })
+    } catch (error) {
+        res.status(404).json(error)   
+    }
+})
+
+app.post('/logout', (req, res) => {
+    res.cookie('token', '').json('ok')
 })
 
 

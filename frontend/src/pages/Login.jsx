@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import axios from 'axios'
 import { Navigate } from 'react-router-dom'
+import { UserContext } from '../contexts/UserContext'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [redirect, setRedirect] = useState(false)
+
+  const {setUserInfo} = useContext(UserContext)
 
   const login = (e) => {
     e.preventDefault()
@@ -13,6 +16,7 @@ const Login = () => {
     axios.post('http://localhost:4000/login', { username, password }, { withCredentials: true })
       .then(res => {
         if (res.status === 200) {
+          setUserInfo(res.data)
           setRedirect(true)
         }
       })
