@@ -3,12 +3,18 @@ import cors from 'cors';
 import { PORT, mongoDBURL } from './config.js';
 import mongoose from 'mongoose';
 import UserModel from './models/User.js';
+import PostModel from './models/Post.js';
 import bycrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser';
+import multer from 'multer';
+import fs from 'fs';
+import PostModel from './models/Post.js';
 
 const salt = bycrypt.genSaltSync(10)
 const secret = 'sdfab2131212nknkl767823nini2nj98'
+
+const uploadMiddleware = multer({ dest: 'uploads/' })
 
 const app = express()
 
@@ -73,6 +79,26 @@ app.get('/profile', (req, res) => {
 
 app.post('/logout', (req, res) => {
     res.cookie('token', '').json('ok')
+})
+
+app.post('/create-post', uploadMiddleware.single('image'), (req, res) => {
+    const {originalname, path} = req.file;
+    const parts = originalname.split('.')
+    const ext = parts[parts.length - 1]
+
+    const newPath = path+'.'+ext
+
+    fs.renameSync(path, newPath)
+
+    const {title, summary, content} = req.body
+
+    const newPost = PostModel.create({
+        title: title,
+        summary: summary,
+        content: content,
+        // image: path+'.'+ext
+        image: newPath
+    })
 })
 
 

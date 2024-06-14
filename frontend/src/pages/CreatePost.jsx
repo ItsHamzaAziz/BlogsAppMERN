@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import axios from 'axios'
 
 const modules = {
     toolbar: [
@@ -32,7 +33,24 @@ const CreatePost = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(content)
+
+        if (!content) {
+            alert('Fill Post Content')
+            return
+        }
+
+        axios.post('http://localhost:4000/create-post', { title, summary, content, image }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    console.log('Success')
+                } else {
+                    console.log('Error')
+                }
+            })
     }
 
     return (
@@ -46,6 +64,7 @@ const CreatePost = () => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className='px-3 py-1 border border-gray-400 rounded-md'
+                    required
                 />
                 <input
                     type="text"
@@ -53,11 +72,13 @@ const CreatePost = () => {
                     value={summary}
                     onChange={(e) => setSummary(e.target.value)}
                     className='px-3 py-1 border border-gray-400 rounded-md'
+                    required
                 />
                 <input
                     type="file"
                     onChange={(e) => setImage(e.target.files[0])}
                     className='px-3 py-3 border border-gray-400 rounded-md'
+                    required
                 />
 
                 <ReactQuill
