@@ -32,8 +32,9 @@ const Login = () => {
 
   return (
     <>
+      <h1 className='text-xl text-center mb-4 font-bold'>Login</h1>
+
       <form onSubmit={login} className='w-1/2 mx-auto border border-gray-400 rounded-xl flex flex-col text-center space-y-4 p-5'>
-        <h1 className='text-lg font-bold'>Login</h1>
 
         <input type="text" 
           placeholder='Your Username'

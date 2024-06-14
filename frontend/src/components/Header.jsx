@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavigationType } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../contexts/UserContext'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const Header = () => {
     const {setUserInfo, userInfo} = useContext(UserContext)
+    const navigate = useNavigate()
 
     useEffect(() => {
         axios.get('http://localhost:4000/profile', { withCredentials: true })
@@ -14,12 +16,14 @@ const Header = () => {
     }, [])
 
     const logout = () => {
-        axios.post('http://localhost:4000/logout', { withCredentials: true })
-        setUserInfo(null)
+        axios.post('http://localhost:4000/logout', {}, { withCredentials: true})
+            .then(() => {
+                navigate('/')
+                setUserInfo(null)
+            })
     }
 
-    const username = userInfo ? userInfo.username : null
-    
+    const username = userInfo ? userInfo.username : null    
 
     return (
         <header className='flex justify-around items-center mt-4 mb-10'>
@@ -31,7 +35,7 @@ const Header = () => {
                 {
                     username ? (
                         <>
-                            <Link to={'/login'}>Create Post</Link>
+                            <Link to={'/create-post'}>Create Post</Link>
                             <Link onClick={logout}>Logout</Link>
                         </>
                     ) : (
