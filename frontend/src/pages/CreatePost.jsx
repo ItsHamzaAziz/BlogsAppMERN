@@ -42,7 +42,8 @@ const CreatePost = () => {
         axios.post('http://localhost:4000/create-post', { title, summary, content, image }, {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
+            withCredentials: true
         })
             .then(response => {
                 if (response.status === 200) {

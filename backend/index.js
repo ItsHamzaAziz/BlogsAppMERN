@@ -9,7 +9,6 @@ import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import fs from 'fs';
-import PostModel from './models/Post.js';
 
 const salt = bycrypt.genSaltSync(10)
 const secret = 'sdfab2131212nknkl767823nini2nj98'
@@ -90,15 +89,36 @@ app.post('/create-post', uploadMiddleware.single('image'), (req, res) => {
 
     fs.renameSync(path, newPath)
 
-    const {title, summary, content} = req.body
+    const {token} = req.cookies
 
-    const newPost = PostModel.create({
-        title: title,
-        summary: summary,
-        content: content,
-        // image: path+'.'+ext
-        image: newPath
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) throw err
+        const {title, summary, content} = req.body
+    
+        const newPost = await PostModel.create({
+            title: title,
+            summary: summary,
+            content: content,
+            // image: path+'.'+ext
+            image: newPath,
+            author: info.id
+        })
+
+        res.json(newPost)
     })
+})
+
+
+app.get('/posts', async (req, res) => {
+    try {
+        res.json(
+            await PostModel.find()
+                .populate('author', ['username'])
+                .sort({createdAt: -1})  // Recently created first
+        )
+    } catch (error) {
+        res.status(404).json(error)   
+    }
 })
 
 
