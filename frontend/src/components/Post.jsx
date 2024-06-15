@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 const Post = ({_id, title, summary, content, image, createdAt, author}) => {
     return (
         <div className='grid grid-cols-2 w-3/4 mx-auto space-x-5 mb-5'>
-            <img src="https://cdn.pixabay.com/photo/2023/03/28/13/28/ai-generated-7883147_1280.jpg"
+            <img src={"http://localhost:4000/"+image}
                 alt="cat"
                 className="w-full h-64 rounded-xl"
             />

@@ -9,6 +9,11 @@ import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename);
 
 const salt = bycrypt.genSaltSync(10)
 const secret = 'sdfab2131212nknkl767823nini2nj98'
@@ -23,6 +28,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(cookieParser())
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose.connect(mongoDBURL)
 
@@ -115,6 +121,7 @@ app.get('/posts', async (req, res) => {
             await PostModel.find()
                 .populate('author', ['username'])
                 .sort({createdAt: -1})  // Recently created first
+                .limit(20)
         )
     } catch (error) {
         res.status(404).json(error)   
