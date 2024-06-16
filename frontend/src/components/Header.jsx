@@ -9,14 +9,14 @@ const Header = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get('http://localhost:4000/profile', { withCredentials: true })
+        axios.get('http://localhost:4000/account/profile', { withCredentials: true })
             .then((response) => {
                 setUserInfo(response.data)
             })
     }, [])
 
     const logout = () => {
-        axios.post('http://localhost:4000/logout', {}, { withCredentials: true})
+        axios.post('http://localhost:4000/account/logout', {}, { withCredentials: true})
             .then(() => {
                 navigate('/')
                 setUserInfo(null)

@@ -9,7 +9,7 @@ const Register = () => {
     e.preventDefault()
     console.log(username, password)
 
-    axios.post('http://localhost:4000/register', { username, password })
+    axios.post('http://localhost:4000/account/register', { username, password })
      .then(res => {
       if (res.status === 200) {
         alert('Registration Successful')
@@ -39,7 +39,7 @@ const Register = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type='submit' className='bg-blue-700 text-white p-2 rounded-md border-none'>Submit</button>
+        <button type='submit' className='bg-blue-700 text-white p-2 rounded-md border-none cursor-pointer'>Submit</button>
       </form>
     </>
   )

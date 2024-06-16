@@ -42,7 +42,7 @@ const CreatePost = () => {
             return
         }
 
-        axios.post('http://localhost:4000/create-post', { title, summary, content, image }, {
+        axios.post('http://localhost:4000/post/create-post', { title, summary, content, image }, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },

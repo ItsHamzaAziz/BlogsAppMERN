@@ -13,7 +13,7 @@ const Login = () => {
   const login = (e) => {
     e.preventDefault()
 
-    axios.post('http://localhost:4000/login', { username, password }, { withCredentials: true })
+    axios.post('http://localhost:4000/account/login', { username, password }, { withCredentials: true })
       .then(res => {
         if (res.status === 200) {
           setUserInfo(res.data)

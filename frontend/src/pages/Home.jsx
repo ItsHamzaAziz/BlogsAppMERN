@@ -6,7 +6,7 @@ const Home = () => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:4000/posts')
+        axios.get('http://localhost:4000/post/all-posts')
             .then(response => setPosts(response.data))
             .catch(error => console.log(error))
     }, [])

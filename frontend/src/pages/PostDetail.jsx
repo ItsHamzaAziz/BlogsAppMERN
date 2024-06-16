@@ -13,6 +13,7 @@ const PostDetail = () => {
     const [userId, setUserId] = useState(null)
 
     const {userInfo} = useContext(UserContext)
+    const [userInfoId, setUserInfoId] = useState(null)
 
     useEffect(() => {
         axios.get(`http://localhost:4000/post/${id}`)
@@ -21,6 +22,8 @@ const PostDetail = () => {
                 setUsername(response.data.author.username)
                 setUserId(response.data.author._id)
             })
+
+        assignUserInfoId()
     }, [])
 
     const deletePost = () => {
@@ -38,6 +41,14 @@ const PostDetail = () => {
                 .catch(err => console.error(err))
         }
     }
+
+    const assignUserInfoId = () => {
+        if (userInfo) {
+        setUserInfoId(userInfo.id)
+        } else {
+            setUserInfoId(null)
+        }
+    }
     
 
     return (
@@ -53,7 +64,7 @@ const PostDetail = () => {
             <p className='text-center mb-5'>{new Date(post.createdAt).toDateString()}</p>
 
             {
-                userId === userInfo.id && (
+                userId === userInfoId && (
                     <div className='text-center space-x-3'>
                         <Link to={`/edit/${post._id}`}>
                             <button className='border-none bg-blue-700 text-white px-3 py-2 rounded-md cursor-pointer'>Edit</button>
