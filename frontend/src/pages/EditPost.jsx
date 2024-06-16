@@ -53,6 +53,7 @@ const EditPost = () => {
             return
         }
 
+
         axios.put(`http://localhost:4000/post/${id}`, { title, summary, content, image }, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -61,7 +62,6 @@ const EditPost = () => {
         })
             .then(response => {
                 if (response.status === 200) {
-                    console.log('Success')
                     navigate(`/post/${id}`)
                 } else {
                     console.log('Error')

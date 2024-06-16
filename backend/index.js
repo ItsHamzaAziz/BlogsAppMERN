@@ -114,7 +114,7 @@ app.post('/create-post', uploadMiddleware.single('image'), (req, res) => {
     })
 })
 
-app.put('/post/:id', async (req, res) => {
+app.put('/post/:id', uploadMiddleware.single('image'), async (req, res) => {
     try {
         const {id} = req.params
         const {title, summary, content} = req.body
