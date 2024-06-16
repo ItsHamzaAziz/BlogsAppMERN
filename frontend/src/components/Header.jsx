@@ -28,20 +28,20 @@ const Header = () => {
     return (
         <header className='flex justify-around items-center mt-4 mb-10'>
             <h1 className='font-bold text-xl'>
-                <Link to={'/'}>MyBlogs</Link>
+                <Link to={'/'} className='text-black no-underline'>MyBlogs</Link>
             </h1>
 
             <nav className='space-x-2'>
                 {
                     username ? (
                         <>
-                            <Link to={'/create-post'}>Create Post</Link>
-                            <Link onClick={logout}>Logout</Link>
+                            <Link to={'/create-post'} className='text-black no-underline'>Create Post</Link>
+                            <Link onClick={logout} className='text-black no-underline'>Logout</Link>
                         </>
                     ) : (
                         <>
-                            <Link to={'/login'}>Login</Link>
-                            <Link to={'/register'}>Register</Link>
+                            <Link to={'/login'} className='text-black no-underline'>Login</Link>
+                            <Link to={'/register'} className='text-black no-underline'>Register</Link>
                         </>
                     )
                 }

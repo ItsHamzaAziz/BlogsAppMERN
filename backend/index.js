@@ -128,6 +128,17 @@ app.get('/posts', async (req, res) => {
     }
 })
 
+app.get('/post/:id', async (req, res) => {
+    try {
+        res.json(
+            await PostModel.findById(req.params.id)
+               .populate('author', ['username'])
+        )
+    } catch (error) {
+        res.status(404).json(error)   
+    }
+})
+
 
 app.listen(PORT)
 

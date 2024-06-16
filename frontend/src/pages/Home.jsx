@@ -15,10 +15,12 @@ const Home = () => {
     return (
         <>
             {
-                posts.length > 0 && (
+                posts.length > 0 ? (
                     posts.map(post => (
                         <Post key={post._id} {...post} />
                     ))
+                ) : (
+                    <h1 className='text-center text-2xl'>No posts yet</h1>
                 )
             }
         </>

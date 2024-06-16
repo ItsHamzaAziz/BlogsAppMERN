@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const modules = {
     toolbar: [
@@ -31,6 +32,8 @@ const CreatePost = () => {
     const [content, setContent] = useState('')
     const [image, setImage] = useState(null)
 
+    const navigate = useNavigate()
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -48,6 +51,7 @@ const CreatePost = () => {
             .then(response => {
                 if (response.status === 200) {
                     console.log('Success')
+                    navigate('/')
                 } else {
                     console.log('Error')
                 }
