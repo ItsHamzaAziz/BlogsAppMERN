@@ -114,6 +114,40 @@ app.post('/create-post', uploadMiddleware.single('image'), (req, res) => {
     })
 })
 
+app.put('/post/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const {title, summary, content} = req.body
+
+        if (req.file) {
+            const {originalname, path} = req.file;
+            const parts = originalname.split('.')
+            const ext = parts[parts.length - 1]
+
+            const newPath = path+'.'+ext
+
+            fs.renameSync(path, newPath)
+
+            const updatedPost = await PostModel.findByIdAndUpdate(id, {
+                title: title,
+                summary: summary,
+                content: content,
+                image: newPath
+            })
+            res.status(200).json(updatedPost)
+        } else {
+            const updatedPost = await PostModel.findByIdAndUpdate(id, {
+                title: title,
+                summary: summary,
+                content: content
+            })
+            res.status(200).json(updatedPost)
+        }
+    } catch (err) {
+        res.status(404).json(err)
+    }
+})
+
 
 app.get('/posts', async (req, res) => {
     try {
@@ -130,6 +164,7 @@ app.get('/posts', async (req, res) => {
 
 app.get('/post/:id', async (req, res) => {
     try {
+        // const {id} = req.params.id
         res.json(
             await PostModel.findById(req.params.id)
                .populate('author', ['username'])

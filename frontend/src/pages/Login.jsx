@@ -34,22 +34,22 @@ const Login = () => {
     <>
       <h1 className='text-xl text-center mb-4 font-bold'>Login</h1>
 
-      <form onSubmit={login} className='w-1/2 mx-auto border border-gray-400 rounded-xl flex flex-col text-center space-y-4 p-5'>
+      <form onSubmit={login} className='w-1/2 mx-auto border border-solid border-gray-400 rounded-xl flex flex-col text-center space-y-4 p-7'>
 
         <input type="text" 
           placeholder='Your Username'
-          className='px-3 py-1 border border-gray-400 rounded-md'
+          className='px-3 py-2 rounded-md border border-solid border-gray-400'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input type="password" 
           placeholder='Your Password'
-          className='px-3 py-1 border border-gray-400 rounded-md'
+          className='px-3 py-2 rounded-md border border-solid border-gray-400'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type='submit' className='bg-blue-700 text-white p-1 rounded-md'>Submit</button>
+        <button type='submit' className='bg-blue-700 text-white p-2 rounded-md cursor-pointer border-none'>Submit</button>
       </form>
     </>
   )
