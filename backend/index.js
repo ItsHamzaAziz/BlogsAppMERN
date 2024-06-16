@@ -148,6 +148,15 @@ app.put('/post/:id', uploadMiddleware.single('image'), async (req, res) => {
     }
 })
 
+app.delete('/post/:id', async (req, res) => {
+    try {
+        await PostModel.findByIdAndDelete(req.params.id)
+        res.status(200).json('Post deleted successfully.')
+    } catch (error) {
+        res.status(404).json(error)   
+    }
+})
+
 
 app.get('/posts', async (req, res) => {
     try {

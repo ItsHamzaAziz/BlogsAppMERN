@@ -68,7 +68,7 @@ const CreatePost = () => {
                     placeholder='Post Title'
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className='px-3 py-1 border border-gray-400 rounded-md'
+                    className='px-3 py-2 border border-solid border-gray-400 rounded-md'
                     required
                 />
                 <input
@@ -76,13 +76,13 @@ const CreatePost = () => {
                     placeholder='Post Summary'
                     value={summary}
                     onChange={(e) => setSummary(e.target.value)}
-                    className='px-3 py-1 border border-gray-400 rounded-md'
+                    className='px-3 py-2 border border-solid border-gray-400 rounded-md'
                     required
                 />
                 <input
                     type="file"
                     onChange={(e) => setImage(e.target.files[0])}
-                    className='px-3 py-3 border border-gray-400 rounded-md'
+                    className='px-3 py-3 border border-solid border-gray-400 rounded-md'
                     required
                 />
 
@@ -95,7 +95,7 @@ const CreatePost = () => {
                     placeholder='Post Content'
                 />
 
-                <button type='submit' className='bg-blue-700 text-white p-1 rounded-md'>Submit</button>
+                <button type='submit' className='bg-blue-700 border-none text-white p-2 rounded-md cursor-pointer'>Submit</button>
             </form>
         </div>
     )

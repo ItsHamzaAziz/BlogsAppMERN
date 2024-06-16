@@ -106,7 +106,7 @@ const EditPost = () => {
                     placeholder='Post Content'
                 />
 
-                <button type='submit' className='bg-blue-700 text-white p-2 rounded-md border-none'>Submit</button>
+                <button type='submit' className='bg-blue-700 text-white p-2 rounded-md border-none cursor-pointer'>Submit</button>
             </form>
         </div>
     )

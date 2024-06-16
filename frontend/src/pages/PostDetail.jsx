@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../contexts/UserContext'
 import { Link } from 'react-router-dom'
 
 const PostDetail = () => {
     const {id} = useParams()
+    const navigate = useNavigate()
+
     const [post, setPost] = useState({})
     const [username, setUsername] = useState('')
     const [userId, setUserId] = useState(null)
@@ -20,6 +22,22 @@ const PostDetail = () => {
                 setUserId(response.data.author._id)
             })
     }, [])
+
+    const deletePost = () => {
+        const confirmDelete = confirm('Are you sure you want to delete this post?')
+
+        if (confirmDelete) {
+            axios.delete(`http://localhost:4000/post/${id}`)
+                .then((response) => {
+                    if (response.status === 200) {
+                        navigate('/')
+                    } else {
+                        alert('Unable to delete this post')
+                    }
+                })
+                .catch(err => console.error(err))
+        }
+    }
     
 
     return (
@@ -29,8 +47,6 @@ const PostDetail = () => {
                 alt=""
                 className='w-full h-72 rounded-xl mb-5'
             />
-
-
 
             <h1 className='text-3xl font-bold text-center mb-5'>{post.title}</h1>
             <p className='text-center'>by {username}</p>
@@ -42,7 +58,7 @@ const PostDetail = () => {
                         <Link to={`/edit/${post._id}`}>
                             <button className='border-none bg-blue-700 text-white px-3 py-2 rounded-md cursor-pointer'>Edit</button>
                         </Link>
-                        <button className='border-none bg-red-600 text-white px-3 py-2 rounded-md cursor-pointer'>Delete</button>
+                        <button onClick={deletePost} className='border-none bg-red-600 text-white px-3 py-2 rounded-md cursor-pointer'>Delete</button>
                     </div>
                 )
             }
