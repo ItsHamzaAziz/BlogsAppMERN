@@ -2,11 +2,14 @@ import express from 'express'
 import UserModel from '../models/User.js'
 import bycrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const router = express()
 
 const salt = bycrypt.genSaltSync(10)
-const secret = 'sdfab2131212nknkl767823nini2nj98'
+const secret = process.env.SECRET
 
 router.post('/register', async (req, res) => {
     try {

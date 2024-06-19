@@ -1,12 +1,14 @@
 import express from 'express';
 import cors from 'cors';
-import { PORT, mongoDBURL } from './config.js';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import accountRoutes from './routes/accountRoutes.js'
 import postRoutes from './routes/postRoutes.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,11 +23,11 @@ app.use(express.json())
 app.use(cookieParser())
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-mongoose.connect(mongoDBURL)
+mongoose.connect(process.env.MONGODB_URI)
 
 app.use('/account', accountRoutes)
 app.use('/post', postRoutes)
 
 
-app.listen(PORT)
+app.listen(process.env.PORT)
 
