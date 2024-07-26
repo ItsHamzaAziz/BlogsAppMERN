@@ -31,11 +31,12 @@ router.post('/login', async (req, res) => {
 
         if (user) {
             if (bycrypt.compareSync(password, user.password)) {
-                jwt.sign({username, id:user._id}, secret, {}, (err, token) => {
+                jwt.sign({username, id:user._id, is_admin:user.is_admin}, secret, {}, (err, token) => {
                     if (err) throw err
                     res.cookie('token', token).json({
                         id: user._id,
-                        username
+                        username,
+                        is_admin: user.is_admin
                     })
                 })
             } else {

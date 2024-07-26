@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link, NavigationType } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../contexts/UserContext'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
     const {setUserInfo, userInfo} = useContext(UserContext)
@@ -23,7 +23,10 @@ const Header = () => {
             })
     }
 
-    const username = userInfo ? userInfo.username : null    
+
+    const username = userInfo ? userInfo.username : null  
+    const is_admin = userInfo ? userInfo.is_admin : null
+    
 
     return (
         <header className='flex justify-around items-center mt-4 mb-10'>
@@ -43,6 +46,11 @@ const Header = () => {
                             <Link to={'/login'} className='text-black no-underline'>Login</Link>
                             <Link to={'/register'} className='text-black no-underline'>Register</Link>
                         </>
+                    )
+                }
+                {
+                    is_admin && (
+                        <Link to={'/create-post'} className='text-black no-underline'>Admin Panel</Link>
                     )
                 }
             </nav>
