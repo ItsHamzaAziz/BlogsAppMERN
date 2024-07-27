@@ -50,7 +50,7 @@ const Header = () => {
                 }
                 {
                     is_admin && (
-                        <Link to={'/create-post'} className='text-black no-underline'>Admin Panel</Link>
+                        <Link to={'/admin'} className='text-black no-underline'>Admin Panel</Link>
                     )
                 }
             </nav>

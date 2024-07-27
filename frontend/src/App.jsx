@@ -7,6 +7,7 @@ import { UserContextProvider } from './contexts/UserContext'
 import CreatePost from './pages/CreatePost'
 import PostDetail from './pages/PostDetail'
 import EditPost from './pages/EditPost'
+import AdminPanel from './admin/AdminPanel'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/create-post' element={ <CreatePost /> } />
           <Route path='/post/:id' element={ <PostDetail /> } />
           <Route path='/edit/:id' element={ <EditPost /> } />
+          <Route path='/admin' element={ <AdminPanel /> } />
         </Route>
       </Routes>
     </UserContextProvider>
