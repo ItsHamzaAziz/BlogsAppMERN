@@ -12,7 +12,10 @@ const modules = {
         [{ 'font': [] }],
         [{ 'align': [] }],
         ['clean']
-    ]
+    ],
+    clipboard: {
+        matchVisual: false
+    }
 }
 
 const formats = [

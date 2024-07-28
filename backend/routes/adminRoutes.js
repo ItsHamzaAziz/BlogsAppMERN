@@ -14,5 +14,53 @@ router.get('/', async (req, res) => {
     res.json({ usersCount: usersCount, postsCount: postsCount })
 })
 
+router.get('/top-users', async (req, res) => {
+    try {
+        const topUsers = await PostModel.aggregate([
+            // Group by author and count the number of posts per author
+            {
+                $group: {
+                    _id: '$author',
+                    postCount: { $sum: 1 }
+                }
+            },
+            // Sort by postCount in descending order
+            {
+                $sort: { postCount: -1 }
+            },
+            // Limit to top 3 results
+            {
+                $limit: 3
+            },
+            // Lookup user details from the User collection
+            {
+                $lookup: {
+                    from: 'users', // The collection name in MongoDB
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'authorDetails'
+                }
+            },
+            // Unwind the authorDetails array
+            {
+                $unwind: '$authorDetails'
+            },
+            // Project the desired fields
+            {
+                $project: {
+                    _id: 0,
+                    // authorId: '$_id',
+                    postCount: 1,
+                    authorUsername: '$authorDetails.username',
+                }
+            }
+        ])
+
+        return res.json(topUsers)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
 export default router
 

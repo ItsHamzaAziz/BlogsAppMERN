@@ -7,6 +7,9 @@ import { UserContextProvider } from './contexts/UserContext'
 import CreatePost from './pages/CreatePost'
 import PostDetail from './pages/PostDetail'
 import EditPost from './pages/EditPost'
+import AdminIndex from './admin/AdminIndex'
+import AdminPosts from './admin/AdminPosts'
+import AdminUsers from './admin/AdminUsers'
 import AdminPanel from './admin/AdminPanel'
 
 function App() {
@@ -20,7 +23,12 @@ function App() {
           <Route path='/create-post' element={ <CreatePost /> } />
           <Route path='/post/:id' element={ <PostDetail /> } />
           <Route path='/edit/:id' element={ <EditPost /> } />
-          <Route path='/admin' element={ <AdminPanel /> } />
+
+          <Route path='/admin' element={ <AdminPanel /> }>
+            <Route index element={<AdminIndex />} />  {/* Default route */}
+            <Route path='all-users' element={<AdminUsers />} />
+            <Route path='all-posts' element={<AdminPosts />} />
+          </Route>
         </Route>
       </Routes>
     </UserContextProvider>
