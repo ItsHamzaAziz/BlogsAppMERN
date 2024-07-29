@@ -102,7 +102,14 @@ const AdminUsers = () => {
                   <tr key={user._id}>
                     <td className='border border-solid border-gray-700 py-2 px-10 rounded-lg'>{user.username}</td>
                     <td className='border border-solid border-gray-700 py-3 px-4 rounded-lg space-x-2'>
-                      <span className='no-underline text-white bg-red-600 px-2 py-1 rounded cursor-pointer' onClick={() => deleteUser(user)}>Delete</span>
+                      {
+                        userInfo.id === user._id? (
+                          <span className='text-white bg-red-600 px-2 py-1 rounded'>Your account</span>
+                        ) : (
+                          <span className='no-underline text-white bg-red-600 px-2 py-1 rounded cursor-pointer' onClick={() => deleteUser(user)}>Delete</span>
+                        )
+                      }
+                      
                       {
                         !user.is_admin ? (
                           <span className='no-underline text-white bg-green-700 px-2 py-1 rounded cursor-pointer' onClick={() => makeUserAdmin(user)}>Make Admin</span>
