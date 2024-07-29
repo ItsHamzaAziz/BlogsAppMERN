@@ -43,6 +43,23 @@ router.put('/user/make-admin/:id', async (req, res) => {
     }
 })
 
+router.put('/user/dismiss-admin/:id', async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.params.id)
+
+        if (user.username === 'hamza') {
+            return res.status(403).json('You cannot dismiss hamza as an admin.')
+        }
+
+        user.is_admin = false
+        user.save()
+
+        res.json('User dismissed admin successfully.')
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
 
 router.get('/posts', async (req, res) => {
     try {

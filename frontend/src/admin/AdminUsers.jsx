@@ -1,10 +1,13 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../contexts/UserContext'
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([])
+
+  const {userInfo} = useContext(UserContext)
 
   useEffect(() => {
     axios.get('http://localhost:4000/admin/users')
@@ -55,6 +58,29 @@ const AdminUsers = () => {
         })
     }
   }
+
+  const dismissAdmin = (user) => {
+    const confirmDismissAdmin = confirm(`Are you sure you want to dismiss ${user.username} as admin?`)
+
+    if (confirmDismissAdmin) {
+      axios.put(`http://localhost:4000/admin/user/dismiss-admin/${user._id}`)
+       .then((response) => {
+          if (response.status === 200) {
+            axios.get('http://localhost:4000/admin/users')
+              .then(response => {
+                setUsers(response.data)
+                console.log(response.data)
+              })
+              .catch(err => console.error(err))
+            alert('Success')
+          }
+        })
+       .catch(err => {
+          console.error(err)
+          alert('Unable to dismiss')
+        })
+    }
+  }
   
 
   return (
@@ -76,13 +102,20 @@ const AdminUsers = () => {
                   <tr key={user._id}>
                     <td className='border border-solid border-gray-700 py-2 px-10 rounded-lg'>{user.username}</td>
                     <td className='border border-solid border-gray-700 py-3 px-4 rounded-lg space-x-2'>
-                      <Link className='no-underline text-white bg-blue-700 px-2 py-1 rounded'>Edit</Link>
                       <span className='no-underline text-white bg-red-600 px-2 py-1 rounded cursor-pointer' onClick={() => deleteUser(user)}>Delete</span>
                       {
                         !user.is_admin ? (
                           <span className='no-underline text-white bg-green-700 px-2 py-1 rounded cursor-pointer' onClick={() => makeUserAdmin(user)}>Make Admin</span>
                         ) : (
-                          <span className='no-underline text-white bg-green-700 px-2 py-1 rounded'>Already Admin</span>
+                          <>
+                            {
+                              userInfo.id === user._id ? (
+                                <span className='text-white bg-green-700 px-2 py-1 rounded'>Your account</span>
+                              ) : (
+                                <span className='text-white bg-green-700 px-2 py-1 rounded cursor-pointer' onClick={() => dismissAdmin(user)}>Dismiss Admin</span>
+                              )
+                            }
+                          </>
                         )
                       }
                     </td>
