@@ -25,6 +25,25 @@ router.get('/users', async (req, res) => {
     }
 })
 
+router.delete('/user/:id', async (req, res) => {
+    try {
+        await UserModel.findByIdAndDelete(req.params.id)
+        res.json('User deleted successfully.')
+    } catch (error) {
+        res.status(404).json(error)
+    }
+})
+
+router.put('/user/make-admin/:id', async (req, res) => {
+    try {
+        await UserModel.findByIdAndUpdate(req.params.id, { 'is_admin': true })
+        res.json('User made admin successfully.')
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
+
 router.get('/posts', async (req, res) => {
     try {
         res.json(

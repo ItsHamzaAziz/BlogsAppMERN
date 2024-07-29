@@ -14,10 +14,51 @@ const AdminUsers = () => {
       })
       .catch(err => console.error(err))
   }, [])
+
+  const deleteUser = (user) => {
+    const confirmDelete = confirm(`Are you sure you want to delete ${user.username}?`)
+
+    if (confirmDelete) {
+      axios.delete(`http://localhost:4000/admin/user/${user._id}`)
+       .then((response) => {
+          if (response.status === 200) {
+            setUsers(users.filter(u => u._id!== user._id))
+            alert('Success')
+          }
+        })
+       .catch(err => {
+          console.error(err)
+          alert('Cannot delete user')
+        })
+    }
+  }
+
+  const makeUserAdmin = (user) => {
+    const confirmMakeAdmin = confirm(`Are you sure you want to make ${user.username} an admin?`) 
+
+    if (confirmMakeAdmin) {
+      axios.put(`http://localhost:4000/admin/user/make-admin/${user._id}`)
+       .then((response) => {
+          if (response.status === 200) {
+            axios.get('http://localhost:4000/admin/users')
+              .then(response => {
+                setUsers(response.data)
+                console.log(response.data)
+              })
+              .catch(err => console.error(err))
+            alert('Success')
+          }
+        })
+       .catch(err => {
+          console.error(err)
+          alert('Cannot make user admin')
+        })
+    }
+  }
   
 
   return (
-    <div className='text-center'>
+    <div className='text-center mb-10'>
       <h1>All Users</h1>
 
       {
@@ -34,21 +75,16 @@ const AdminUsers = () => {
                 users.map(user => (
                   <tr key={user._id}>
                     <td className='border border-solid border-gray-700 py-2 px-10 rounded-lg'>{user.username}</td>
-                    <td className='border border-solid border-gray-700 py-2 px-4 rounded-lg space-x-2'>
+                    <td className='border border-solid border-gray-700 py-3 px-4 rounded-lg space-x-2'>
                       <Link className='no-underline text-white bg-blue-700 px-2 py-1 rounded'>Edit</Link>
-                      <Link className='no-underline text-white bg-red-600 px-2 py-1 rounded'>Delete</Link>
+                      <span className='no-underline text-white bg-red-600 px-2 py-1 rounded cursor-pointer' onClick={() => deleteUser(user)}>Delete</span>
                       {
                         !user.is_admin ? (
-                          <Link className='no-underline text-white bg-green-700 px-2 py-1 rounded'>Make Admin</Link>
+                          <span className='no-underline text-white bg-green-700 px-2 py-1 rounded cursor-pointer' onClick={() => makeUserAdmin(user)}>Make Admin</span>
                         ) : (
                           <span className='no-underline text-white bg-green-700 px-2 py-1 rounded'>Already Admin</span>
                         )
                       }
-                      {/* <Link className='no-underline text-white bg-green-700 px-2 py-1 rounded'>
-                        {
-                          user.is_admin ? 'Admin' : 'Make Admin'
-                        }
-                      </Link> */}
                     </td>
                   </tr>
                 ))

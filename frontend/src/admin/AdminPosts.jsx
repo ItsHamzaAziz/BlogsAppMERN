@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const AdminPosts = () => {
   const [posts, setPosts] = useState([])
@@ -18,13 +19,15 @@ const AdminPosts = () => {
     <div className='text-center mb-10'>
       <h1>All Posts</h1>
 
+      <p>Click on post to read, edit or delete it</p>
+
       {
         posts.length > 0 ? (
-          <div>
+          <div className='space-y-2'>
             {posts.map(post => (
-              <div key={post._id} className='text-xl'>
+              <Link to={`/post/${post._id}`} className='text-black no-underline block text-xl'>
                 "{post.title}" by {post.author.username}
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
