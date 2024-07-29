@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import UserModel from '../models/User.js'
 import PostModel from '../models/Post.js'
+import mongoose from 'mongoose'
 
 dotenv.config()
 
@@ -26,10 +27,21 @@ router.get('/users', async (req, res) => {
 })
 
 router.delete('/user/:id', async (req, res) => {
+    const session = await mongoose.startSession()
+    session.startTransaction()
+
     try {
-        await UserModel.findByIdAndDelete(req.params.id)
+        await PostModel.deleteMany({ author: req.params.id }).session(session)
+        await UserModel.findByIdAndDelete(req.params.id).session(session)
+        
+        await session.commitTransaction()
+        session.endSession()
+
         res.json('User deleted successfully.')
     } catch (error) {
+        await session.abortTransaction()
+        session.endSession()
+        
         res.status(404).json(error)
     }
 })
