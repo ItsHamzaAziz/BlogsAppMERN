@@ -14,6 +14,29 @@ router.get('/', async (req, res) => {
     res.json({ usersCount: usersCount, postsCount: postsCount })
 })
 
+router.get('/users', async (req, res) => {
+    try {
+        res.json(
+            await UserModel.find({})
+                .sort({createdAt: -1})
+        )
+    } catch (error) {
+        res.status(500).json('Error loading users')
+    }
+})
+
+router.get('/posts', async (req, res) => {
+    try {
+        res.json(
+            await PostModel.find({})
+               .sort({ createdAt: -1 })
+               .populate('author', ['username'])
+        )
+    } catch (error) {
+        res.status(500).json('Error loading posts')
+    }
+})
+
 router.get('/top-users', async (req, res) => {
     try {
         const topUsers = await PostModel.aggregate([
