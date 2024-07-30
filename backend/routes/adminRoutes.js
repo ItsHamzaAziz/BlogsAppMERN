@@ -85,6 +85,34 @@ router.get('/posts', async (req, res) => {
     }
 })
 
+router.post('/search-post', async (req, res) => {
+    try {
+        const search = req.body.search
+        
+        // Case-insensitive search
+        const posts = await PostModel.find({ title: { $regex: search, $options: 'i' } })
+                                .sort({ createdAt: -1 })
+                                .populate('author', ['username'])
+        res.json(posts)
+    } catch (error) {
+        res.status(500).json('Error')
+    }
+})
+
+router.get('/search-post/:search', async (req, res) => {
+    try {
+        const search = req.params.search
+
+        const posts = await PostModel.find({ title: { $regex: search, $options: 'i' } })
+                                .sort({ createdAt: -1 })
+                                .populate('author', ['username'])
+        res.json(posts)
+    } catch (error) {
+        
+    }
+})
+
+
 router.get('/top-users', async (req, res) => {
     try {
         const topUsers = await PostModel.aggregate([
