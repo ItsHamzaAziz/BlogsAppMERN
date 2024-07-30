@@ -99,18 +99,6 @@ router.post('/search-post', async (req, res) => {
     }
 })
 
-router.get('/search-post/:search', async (req, res) => {
-    try {
-        const search = req.params.search
-
-        const posts = await PostModel.find({ title: { $regex: search, $options: 'i' } })
-                                .sort({ createdAt: -1 })
-                                .populate('author', ['username'])
-        res.json(posts)
-    } catch (error) {
-        
-    }
-})
 
 
 router.get('/top-users', async (req, res) => {
